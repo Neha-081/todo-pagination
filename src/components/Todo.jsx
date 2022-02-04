@@ -2,12 +2,12 @@ import React, {  useState,useEffect } from "react";
 import TodoInput from "./TodoInput";
 import { v4 as uuid } from "uuid";
 import TodoList from "./TodoList";
+import '../App.css'
 
 
 function Todo() {
   let [todos, setTodos] = useState([]);
   const [text, setText] = useState("");
-  const [toggle,setToggle]=useState(false)
   const [loading,setLoading]=useState(false)
   const [page,setPage]=useState(1)
 
@@ -31,7 +31,7 @@ function Todo() {
   }
 
   const getTodos=()=>{
-    fetch(`http://localhost:3001/todos?_page=${page}&_limit=4`)
+    fetch(`http://localhost:3001/todos?_page=${page}&_limit=3`)
     .then((d)=>d.json())
     .then(setTodos).then(()=>{
         setLoading(false)
@@ -47,31 +47,44 @@ const deleteMe = (id) => {
       getTodos()}).catch((err)=> console.log(err,'delete ni hua'))
   };
 
+
+  //update
+  const toggleList = (id) => {
+    fetch(`http://localhost:3001/todos/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        status:true
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then(getTodos)
+    .catch(err => console.log(err,'patch ni hua'));
+  };
+
+
 useEffect(()=>{
     getTodos(page)
 },[page])
 
-  const handleClick = (textComing) => {
+//   const handleClick = (textComing) => {
 
-    if (todos.length) {
-        for (let el of todos) {
-          if (el.title === textComing) {
-            alert(`Item with name "${textComing}" already exist`);
-          }
-           else {
-            setTodos();
-          }
-        }
-      } else {
-            setTodos();
-      }
-    setText("")
-  };
+//     if (todos.length) {
+//         for (let el of todos) {
+//           if (el.title === textComing) {
+//             alert(`Item with name "${textComing}" already exist`);
+//           }
+//            else {
+//             setTodos();
+//           }
+//         }
+//       } else {
+//             setTodos();
+//       }
+//     setText("")
+//   };
 
-
-const handleToggle=()=>{
-    setToggle(!toggle)
-     }
 
 
   const addItem = (e) => {
@@ -86,8 +99,8 @@ const handleToggle=()=>{
       {todos.map((e) => {
         return (
           <TodoList
-          toggle={toggle}
-          handleToggle={handleToggle}
+          status={e.status}
+          toggleList={toggleList}
           deleteMe={deleteMe}
             key={e.id}
             title={e.title}
@@ -95,15 +108,17 @@ const handleToggle=()=>{
           />
         );
       })}
- <button disabled={page===1} onClick={()=>{
+      <div className="pageDiv">
+ <button className="btn btn-secondary" disabled={page===1} onClick={()=>{
    setPage(page-1)
    setLoading(true)
  }}>Previous</button>
- <button  onClick={()=>{
+ <button disabled={page>todos.length} className="btn btn-secondary"  onClick={()=>{
    setPage(page+1)
    setLoading(true)
  }}>Next</button>
- <h3 >Page:{page}</h3>
+ <h5 >Page:{page}</h5>
+ </div>
     </div>
   );
 }
