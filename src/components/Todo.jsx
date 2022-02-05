@@ -94,7 +94,7 @@ useEffect(()=>{
 
   return loading? (<h1>...Loading</h1>):
   (
-    <div>
+    <div className="container">
       <TodoInput addItem={addItem} text={text}  handleAddTodo={handleAddTodo}/>
       {todos.map((e) => {
         return (
@@ -109,10 +109,10 @@ useEffect(()=>{
         );
       })}
       <div className="pageDiv">
- <button className="btn btn-secondary" disabled={page===1} onClick={()=>{
+ <button className="btn btn-secondary prev" disabled={page===1} onClick={()=>{
    setPage(page-1)
    setLoading(true)
- }}>Previous</button>
+ }}>Prev</button>
  <button disabled={page>todos.length} className="btn btn-secondary"  onClick={()=>{
    setPage(page+1)
    setLoading(true)
