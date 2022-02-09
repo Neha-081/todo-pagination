@@ -13,7 +13,7 @@ function Todo() {
 
 //add todo
   const handleAddTodo=()=>{
-      fetch("http://localhost:3001/todos",{
+      fetch("https://neha-json-server.herokuapp.com/todos",{
           method:"POST",
           body:JSON.stringify({
               title:text,
@@ -31,7 +31,7 @@ function Todo() {
   }
 
   const getTodos=()=>{
-    fetch(`http://localhost:3001/todos?_page=${page}&_limit=3`)
+    fetch(`https://neha-json-server.herokuapp.com/todos?_page=${page}&_limit=3`)
     .then((d)=>d.json())
     .then(setTodos).then(()=>{
         setLoading(false)
@@ -41,7 +41,7 @@ function Todo() {
 //delete todo
 
 const deleteMe = (id) => {
-    fetch(`http://localhost:3001/todos/${id}`, {
+    fetch(`https://neha-json-server.herokuapp.com/todos/${id}`, {
       method: "DELETE",
     }).then(res => {
       getTodos()}).catch((err)=> console.log(err,'delete ni hua'))
@@ -50,7 +50,7 @@ const deleteMe = (id) => {
 
   //update
   const toggleList = (id) => {
-    fetch(`http://localhost:3001/todos/${id}`, {
+    fetch(`https://neha-json-server.herokuapp.com/todos/${id}`, {
       method: "PATCH",
       body: JSON.stringify({
         status:true
