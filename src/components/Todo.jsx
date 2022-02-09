@@ -66,7 +66,7 @@ const deleteMe = (id) => {
 
 useEffect(()=>{
     getTodos(page)
-},[page])
+},[page,getTodos])
 
 //   const handleClick = (textComing) => {
 
